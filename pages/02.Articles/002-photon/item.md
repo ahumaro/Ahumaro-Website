@@ -9,7 +9,7 @@ taxonomy:
 
 In the search for a thin yet efficient and powerfull host, VMWate Photon is a promising bet to become a good host for guest containers.
 
-Using technologies like Docker to build self-contained solutions is a very sleek and eficient way to achieve modular and reusable building block services. In that way we must focus in the performance of the guest and the eficiency of the host.
+Using technologies like Docker to build self-contained solutions is a very sleek and efficient way to achieve modular and reusable building block services. In that way we must focus in the performance of the guest and the eficiency of the host.
 
 Is mandatory to find a host OS that uses as less resources as posible and to ensure the guest containers to absorbe the memory and power they reqiere without compromises and here is where VMWare Photon fits perfectly offering many features like:
 
