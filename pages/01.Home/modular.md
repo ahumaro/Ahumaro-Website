@@ -1,6 +1,6 @@
 ---
-title: Welcome
-menu: Welcome
+title: Home
+menu: Home
 onpage_menu: false
 body_classes: "modular header-image fullwidth"
 
