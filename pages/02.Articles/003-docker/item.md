@@ -9,15 +9,19 @@ taxonomy:
 
 When we talk about Content Management Systems, major names comes to our minds like Drupal, Joomla or WordPress, but if we want a modern, simple but also very powerful CMS, Grav is the new comer to this game.
 
-Now, If we pair Grav CMS with Docker and Nginx, we have a very light and eficient team for the win in a small footprint.
+Now, If we pair Grav CMS with Docker and Nginx, we have a very light and efficient team for the win in a small footprint.
+
+>>>>>> You can find my **Dockerfile** ready to build on my [**Github**](https://github.com/ahumaro/Grav-PHP-Nginx) account.
+
+>>>>>> You can get a **Docker image** ready to run in my [**DockerHub**](https://registry.hub.docker.com/u/ahumaro/grav-php-nginx/) account (**ahumaro/grav-php-nginx**)
 
 #### One process per container or not
 
-In theory, the use of Docker and containers encourage the **_one process per container_** approach but, from the point of view of software as a service, maybe we can focus this article with the philosophy of **_one service per container_**. 
+In theory, the use of Docker and containers encourage the **_one process per container_** philosophy but, from the point of view of software as a service, maybe we can focus this article with the philosophy of **_one service per container_**.
 
 #### Dockerfile step-by-step
 
-Lets try it. Lets create a new Docker container and inside it, lets buils our CMS stack with Nginx, PHP and Grav in a few easy steps. All of this builded automatically by docker and guided by a Dokerfile.
+Lets try it. Lets create a new Docker container and inside it, lets build our CMS stack with Nginx, PHP and Grav in a few easy steps. All of this builded automatically by docker and guided by a Dokerfile.
 
 ##### Step 0: Phusion as a base container
 
@@ -25,7 +29,7 @@ Lets try it. Lets create a new Docker container and inside it, lets buils our CM
 FROM phusion/baseimage:0.9.16
 ```
 With this Dockerfile instruction, Phusion will be the base image for this container. Version 0.9.16 is based on **Ubuntu 14.04 LTS**
->>>>> Usually, a docker container is based in a Linux distro, it depends on your needs but, sometimes, the distro is too fat, not very friendly nor efficient living in a container. Thats way solutions like Phusion comes in handy due to its extra utilities and its lightweight footprint. For more information: [**Phusion Github**](https://github.com/phusion/baseimage-docker).
+>>>>> Usually, a docker container is based in a Linux distro, it depends on your needs but, sometimes, the distro is too fat, not very friendly nor efficient living in a container. That's why solutions like Phusion comes in handy due to its extra utilities and its lightweight footprint. For more information: [**Phusion Github**](https://github.com/phusion/baseimage-docker).
 
 ##### Step 1: Install core packages
 
@@ -117,7 +121,7 @@ RUN sed -i \
 RUN rm -f /etc/service/sshd/down
 RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
 ```
-The first two parts write a small script that runs the PHP and Nginx services at boot time of the container. This service keeps track of those daemons and restart it they die.
+The first two parts write a small script that runs the PHP and Nginx services at boot time of the container. This service keeps track of those daemons and can restart them if they die.
 
 The last part enables SSH service and disables password login for security reasons. Later you can inject your SSH public key so you can login to the container in a very secure way.
 
@@ -149,7 +153,7 @@ Here you can see how you can redirect the ports. For example, port 22 of the con
 
 #### Test the final product
 
-The new container is up running. Nginx and Grav is ready to handle new petitions so lets try it. Open a broser and point it to the host machine with port 8080, this will redirect the petition to por 80 on the container where Nginx-Grav is watting. You will get the following result:
+The new container is up and running. Nginx and Grav is ready to handle new requests so lets try it. Open a browser and point it to the host machine with port 8080, this will redirect the request to port 80 on the container where Nginx-Grav is watting. You will get the following result:
 
 ![Grav-Nginx with Docker](img/docker01.png)
 
@@ -157,7 +161,7 @@ The new container is up running. Nginx and Grav is ready to handle new petitions
 
 Now you are ready tu run but don't forget there are many more posibilities that you can explore. For example:
 
-+ How to find the exposed volumes on the host is very easy, fist find the ID of the running container with the following command:
++ How to find the exposed volumes on the host is very easy, first find the ID of the running container with the following command:
   ```
   root [ ~ ]# docker ps
   CONTAINER ID        IMAGE                           COMMAND             CREATED             STATUS              PORTS                                        NAMES
@@ -173,7 +177,7 @@ Now you are ready tu run but don't forget there are many more posibilities that 
         "/usr/share/nginx/html": "/var/lib/docker/vfs/dir/5c927c2485052a57e70ea66bda9911479e581eceb891f5ea12a38f061a209591"
   ...
   ```
-  Now you can see the mappings and you can access those folders from the host, for example, you can insert your SSH public key inside SSH user config folder of the container
+  Now you can see the mappings and you can access those folders from the host, for example, you can insert your public key inside SSH user config folder of the container.
   ```
   cat my_ssh_key.pub > /var/lib/docker/vfs/dir/24db3321bd511e2134dd3f6487707e62accd2bcbf2cfd299773aba9c7cb79a18/authorized_keys
   ```
@@ -183,7 +187,9 @@ Now you are ready tu run but don't forget there are many more posibilities that 
   ```
 + For the management of the Grav CMS content, there are many strategies. You can access the root folder from the volumes exposed. Also you can access directly to the container via SSH. The way I recommend is to synchronize the user folder of Grav (/usr/share/nginx/html/user) to a Git repository and just pull new changes inside it.
 
-+ Don't forget you can run your containers on the cloud with services like [Amazon EC2](http://aws.amazon.com/ec2/), [Golgle Compute Engine](https://cloud.google.com/compute/) or [Digital Ocean](http://www.digitalocean.com) amog others. I like a lot the Google service but if you want a cheaper and good option you can go with Digital Ocean. 
++ Don't forget you can run your containers on the cloud with services like [Amazon EC2](http://aws.amazon.com/ec2/), [Golgle Compute Engine](https://cloud.google.com/compute/) or [Digital Ocean](http://www.digitalocean.com) among others. I like a lot the Google service but if you want a cheaper and good option, you can go with Digital Ocean.
+
++ For the host OS right now I am testing VMware Photon and looks very sleek and nice. It has a small footprint and is very efficient running Docker infrastructure. You can run Photon on the cloud or locally. Checkout my article about [**Setup Photon Step-by-Step**](/Articles/002-photon).  
 
 + Remember that you can find [my Grav-PHP-Nginx Dockerfile on Github](https://github.com/ahumaro/Grav-PHP-Nginx) ready to build or, if you are in a hurry, just get [my pre-builded Docker image ready to run at Docker Hub](https://registry.hub.docker.com/u/ahumaro/grav-php-nginx/).
 
