@@ -14,7 +14,7 @@ In the search for a thin yet efficient and powerfull host, VMWate Photon is a pr
   <img alt="pic" src="http://www.ahumaro.com/pic.jpg" />
   <img alt="poc" src="http://www.ahumaro.com/poc.jpg" />
   <img alt="puc" src="http://www.ahumaro.com/puc.jpg" />
-  <img itemprop="image" alt="pux" src="unsplash.png" />
+  <img itemprop="image" alt="pux" src="test/unsplash.png" />
   <p>Primer parrafo, primer parrafo, primer parrafo, primer parrafo, primer parrafo, primer parrafo, primer parrafo, primer parrafo, primer parrafo, primer parrafo.</p>
   <p itemprop="description">Esta es una pagina que muestra varias imagenes, es una pagina que muestra varias imagenes, es una pagina que muestra varias imagenes.</p>
   <p>Tercer parrafo, tercer parrafo, tercer parrafo, tercer parrafo, tercer parrafo, tercer parrafo, tercer parrafo, tercer parrafo, tercer parrafo, tercer parrafo.</p>
