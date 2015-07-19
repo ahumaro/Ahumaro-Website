@@ -25,6 +25,6 @@ In the search for a thin yet efficient and powerfull host, VMWate Photon is a pr
 In the search for a thin yet efficient and powerfull host, VMWate Photon is a promising bet to become a good host for guest containers.
  
   <script src="https://apis.google.com/js/platform.js" async defer></script>
-  <div class="g-plus" data-action="share" data-href="test"></div>
+  <div class="g-plus" data-action="share" data-href="http://www.ahumaro.com/Articles/test"></div>
 
 www.ahumaro.com
