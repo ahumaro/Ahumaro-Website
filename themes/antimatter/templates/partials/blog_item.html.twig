@@ -49,9 +49,11 @@
         {% endif %}
         <p><a href="{{ page.url }}">Continue Reading...</a></p>
     {% else %}
+        <p>
         <div class="g-plusone"></div><div class="g-plus" data-action="share"></div>
-        <p>{{ page.content }}</p>
+        {{ page.content }}
         <div class="g-plusone"></div><div class="g-plus" data-action="share"></div>
+        </p>
         {% set show_prev_next = true %}
     {% endif %}
 
