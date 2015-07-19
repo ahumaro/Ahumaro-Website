@@ -11,10 +11,10 @@ In the search for a thin yet efficient and powerfull host, VMWate Photon is a pr
 
 <div itemscope itemtype="http://schema.org/Article">
   <h1 itemprop="name">Este es un test</h1>
-  <img alt="pic" src="http://www.ahumaro.com/pic.jpg" />
-  <img alt="poc" src="http://www.ahumaro.com/poc.jpg" />
-  <img alt="puc" src="http://www.ahumaro.com/puc.jpg" />
-  <img itemprop="image" alt="pux" src="http://www.ahumaro.com/Articles/test/unsplash.png" />
+  <img alt="pic" src="test/img/pic.jpg" />
+  <img alt="poc" src="test/img/poc.jpg" />
+  <img alt="puc" src="test/img/puc.jpg" />
+  <img itemprop="image" alt="pux" src="test/unsplash.png" />
   <p>Primer parrafo, primer parrafo, primer parrafo, primer parrafo, primer parrafo, primer parrafo, primer parrafo, primer parrafo, primer parrafo, primer parrafo.</p>
   <p itemprop="description">Esta es una pagina que muestra varias imagenes, es una pagina que muestra varias imagenes, es una pagina que muestra varias imagenes.</p>
   <p>Tercer parrafo, tercer parrafo, tercer parrafo, tercer parrafo, tercer parrafo, tercer parrafo, tercer parrafo, tercer parrafo, tercer parrafo, tercer parrafo.</p>
@@ -25,6 +25,6 @@ In the search for a thin yet efficient and powerfull host, VMWate Photon is a pr
 In the search for a thin yet efficient and powerfull host, VMWate Photon is a promising bet to become a good host for guest containers.
  
   <script src="https://apis.google.com/js/platform.js" async defer></script>
-  <div class="g-plus" data-action="share" data-href="http://www.ahumaro.com/Articles/test"></div>
+  <div class="g-plus" data-action="share" data-href="test"></div>
 
 www.ahumaro.com
