@@ -52,7 +52,7 @@ $rule-color: 					#F0F2F4;
 $code-text:						#c7254e;
 $code-bg:						#f9f2f4;
 $pre-text:						#237794;
-$pre-bg:						#f6f6f6;
+$pre-bg:						#f0f0f0;
 
 // Dark Contrast variation
 $dark-navbar-text:				#999;
@@ -60,3 +60,16 @@ $dark-sidebar:					#222;
 $dark-sidebar-text:				#999;
 $dark-main-bg:					#333;
 $dark-body-border:				#666;
+
+// Info - Yellow
+$notes-info-border:     #F0AD4E;
+$notes-info-bg:         #FCF8F2;
+// Warning - Red
+$notes-warning-border:  #D9534F;
+$notes-warning-bg:      #FDF7F7;
+// Note - Blue
+$notes-note-border:     #5BC0DE;
+$notes-note-bg:         #F4F8FA;
+// Success - Green
+$notes-success-border:  #5CB85C;
+$notes-success-bg:      #F1F9F1;
