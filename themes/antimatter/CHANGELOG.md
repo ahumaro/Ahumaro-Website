@@ -1,3 +1,105 @@
+# v2.0.0
+## 07/14/2016
+
+1. [](#new)
+    * Added microformats2 support [#64](https://github.com/getgrav/grav-theme-antimatter/pull/64)
+1. [](#improved)
+    * Updated to FontAwesome 4.6.3
+    * Added romanian, russian and ukranian
+    
+# v2.0.0-beta.1
+## 05/23/2016
+
+1. [](#new)
+    * New and improved **dropdown** styling
+1. [](#improved)
+    * Removed templates from `form` + `snipcart` plugins
+    * Added support for search button
+    * Updated some translations
+    * Automatically add comments if configured
+    * Relative path for favicon
+    * Slightly modified the blockquote background color
+    * Removed unneeded streams from YAML
+    * Use common language strings in Blueprint
+
+# v1.8.0
+## 11/20/2015
+
+1. [](#new)
+    * Added logic to include site.menu items in modular pages
+    * Added a configurable lang field for HTML tag
+    * Added a `bottom` JS output call
+1. [](#improved)
+    * Updated to FontAwesome 4.4.0
+1. [](#bugfix)
+    * Fixed extra `/` in some tag URLs
+    * Better support for PECL Yaml parser
+    * Fixes for blog page blueprint
+
+# v1.7.6
+## 10/07/2015
+
+1. [](#new)
+    * Added logic to include site.menu items in modular pages
+1. [](#improved)
+    * Removed unused `<p>` tags
+
+# v1.7.5
+## 09/16/2015
+
+1. [](#improved)
+    * Use new form plugin templates
+
+# v1.7.3
+## 09/11/2015
+
+1. [](#new)
+    * Added SCSS configurable notes colors
+1. [](#improved)
+    * Various typos
+
+# v1.7.3
+## 08/31/2015
+
+1. [](#new)
+    * Added header image control and blueprints to admin plugin
+1. [](#improved)
+    * Use new template field for modular pages
+
+# v1.7.2
+## 08/24/2015
+
+1. [](#new)
+    * Added support for `login-status` partial in menu
+
+# v1.7.1
+## 08/11/2015
+
+1. [](#improved)
+    * Use new toggle for item blueprint
+
+# v1.7.0
+## 08/06/2015
+
+1. [](#new)
+    * Blueprints that work with new admin plugin!
+1. [](#bugfix)
+    * Favicon with full image URL   
+
+# v1.6.1
+## 07/24/2015
+
+1. [](#bugfix)
+    * Fixed sidebar links when site at root
+
+# v1.6.0
+## 07/21/2015
+
+1. [](#new)
+    * Added support for `langswitcher` plugin
+1. [](#improved)
+    * Made sidebar links more robust
+
 # v1.5.0
 ## 07/14/2015
 

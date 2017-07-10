@@ -1,5 +1,5 @@
 title: Features
-@extends: default
+'@extends': default
 
 form:
   fields:
@@ -11,9 +11,14 @@ form:
               fields:
                 column1:
                   fields:
-                    type:
+                    name:
                       default: modular/features
-                      @data-options: '\Grav\Common\Page\Pages::modularTypes'
+                      '@data-options': '\Grav\Common\Page\Pages::modularTypes'
+            overrides:
+              fields:
+                header.template:
+                  default: modular/features
+                  '@data-options': '\Grav\Common\Page\Pages::modularTypes'
         features:
           type: tab
           title: Features
