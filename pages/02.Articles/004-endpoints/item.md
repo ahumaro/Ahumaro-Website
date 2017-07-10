@@ -7,11 +7,11 @@ taxonomy:
     tag: [cloud, backend]
 ---
 
-#### Platform as a Service (PaaS) or the so called Serverless infrastructure
-
 At the present time, when we talk about Cloud Computing the first scenarios we think about are Virtual Machines hosted somewhere in the cloud, managed by ourselves and with complete freedom to customize the O.S. and all the tools and frameworks a la carte. Other scenario are the so popular Containers, like Docker, where we can create microservices and can be managed with some kind of orchestration system like Kubernetes.
 
-But, there is another scenario, IMHO, the most forgotten and less marketed of all: The so called Serverless, or, being strict, the **Platform as a Service (PaaS)** scenario. In this environment, you are not able to manage a virtual machine nor a container. You only focus all your effort in your applications and you can deploy your code into this infrastructure and the platform is in charge to run, scale, and protect your invention.
+#### Platform as a Service (PaaS) or the so called Serverless infrastructure
+
+Apart from the previous mentioned, there is another scenario, IMHO, the most forgotten and less marketed of all: The so called Serverless, or, being strict, the **Platform as a Service (PaaS)** scenario. In this environment, you are not able to manage a virtual machine nor a container. You only focus all your effort in your applications and you can deploy your code into this infrastructure and the platform is in charge to run, scale, and protect your invention.
 
 It’s marvelous because you only pay what you use, and you are free of the concernings of actualizations of the O.S., scaling and all that bad nightmares. 
 
