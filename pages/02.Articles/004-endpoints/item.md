@@ -1,197 +1,66 @@
 ---
-title: Google Cloud Endpoints
-date: 14:00 07/05/2017
+title: Debugging Google App Engine and Cloud Endpoints with IDE
+date: 14:00 07/09/2017
 author: Ahumaro Mendoza
 taxonomy:
     category: blog
     tag: [cloud, backend]
 ---
 
-When we talk about Content Management Systems, major names comes to our minds like Drupal, Joomla or WordPress, but if we want a modern, simple but also very powerful CMS, Grav is the new comer to this game.
+#### Platform as a Service (PaaS) or the so called Serverless infrastructure
 
-Now, If we pair Grav CMS with Docker and Nginx, we have a very light and efficient team for the win in a small footprint.
+At the present time, when we talk about Cloud Computing the first scenarios we think about are Virtual Machines hosted somewhere in the cloud, managed by ourselves and with complete freedom to customize the O.S. and all the tools and frameworks a la carte. Other scenario are the so popular Containers, like Docker, where we can create microservices and can be managed with some kind of orchestration system like Kubernetes.
 
->>>>>> You can find my **Dockerfile** ready to build on my [**Github**](https://github.com/ahumaro/Grav-PHP-Nginx) account.
+But, there is another scenario, IMHO, the most forgotten and less marketed of all: The so called Serverless, or, being strict, the **Platform as a Service (PaaS)** scenario. In this environment, you are not able to manage a virtual machine nor a container. You only focus all your effort in your applications and you can deploy your code into this infrastructure and the platform is in charge to run, scale, and protect your invention.
 
->>>>>> You can get a **Docker image** ready to run in my [**DockerHub**](https://registry.hub.docker.com/u/ahumaro/grav-php-nginx/) account (**ahumaro/grav-php-nginx**)
+It’s marvelous because you only pay what you use, and you are free of the concernings of actualizations of the O.S., scaling and all that bad nightmares. 
 
-#### One process per container or not
+All these goodies don't come at a free price of course. There are some restrictions you have to live with, like the languages supported and, in some cases, you cannot use the full set of the language selected (in the case of Java, for example, multithreading, sockets, etc.).
 
-In theory, the use of Docker and containers encourage the **_one process per container_** philosophy but, from the point of view of software as a service, maybe we can focus this article with the philosophy of **_one service per container_**.
+If you can live with those caveats, then, try it, you will be glad for the simplicity and effortless of putting some code in the cloud.
 
-#### Dockerfile step-by-step
+One of those infrastructures among others is **Google App Engine**. It’s very easy to use and really affordable. The best of all, your code runs on the same infrastructure Google use for some if its products. Also, many frameworks can run on top of it, for example, **Google Cloud Endpoints**: One of the best and easiest ways to build and publish an API that can be consumed by iOS, Android and Web clients. It can be a RESTful API, a gRPC based, Open API, among others.
 
-Lets try it. Lets create a new Docker container and inside it, lets build our CMS stack with Nginx, PHP and Grav in a few easy steps. All of this builded automatically by docker and guided by a Dokerfile.
 
-##### Step 0: Phusion as a base container
+>>>>>> For more information about **PaaS**, **GAE** and **GCE** use the following links:
 
-```
-FROM phusion/baseimage:0.9.16
-```
-With this Dockerfile instruction, Phusion will be the base image for this container. Version 0.9.16 is based on **Ubuntu 14.04 LTS**
->>>>> Usually, a docker container is based in a Linux distro, it depends on your needs but, sometimes, the distro is too fat, not very friendly nor efficient living in a container. That's why solutions like Phusion comes in handy due to its extra utilities and its lightweight footprint. For more information: [**Phusion Github**](https://github.com/phusion/baseimage-docker).
+>>>>>> [**Platform as a Service (PaaS)**](https://en.wikipedia.org/wiki/Platform_as_a_service)
+>>>>>> **|** [**Google App Engine**](https://cloud.google.com/appengine)
+>>>>>> **|** [**Google Cloud Endpoints**](https://cloud.google.com/endpoints/)
 
-##### Step 1: Install core packages
+#### Using an IDE for coding and debugging
 
-```
-#Install core packages
-RUN apt-get update -q
-RUN apt-get upgrade -y -q
-RUN apt-get install -y -q php5 php5-cli php5-fpm php5-gd php5-curl php5-apcu ca-certificates nginx git-core
-RUN apt-get clean -q && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-```
-Instructions to install the core packages for the container like nginx, php and git
+Using an **IDE** is not a rule when you are going to develop some code for Google App Engine. Google has developed the frameworks with an IDE agnostic way in mind so you can even use notepad or vi to develop your product.
 
-##### Step 2: Get latest Grav from Git and install it
+You can use **Maven** or **Gradle** to perform some of the basic tasks in the build chain and also you can generate the required artifacts to deploy your next API in the cloud.
 
-```
-#Get Grav
-RUN rm -fR /usr/share/nginx/html/
-RUN git clone https://github.com/getgrav/grav.git /usr/share/nginx/html/
+In the other hand, for some tasks, it’s easier to have a good IDE where you can have code completion, refactoring and all those sweeteners at developing time.
 
-#Install Grav
-WORKDIR /usr/share/nginx/html/
-RUN bin/composer.phar self-update
-RUN bin/grav install
-RUN chown www-data:www-data .
-RUN chown -R www-data:www-data *
-RUN find . -type f | xargs chmod 664
-RUN find . -type d | xargs chmod 775
-RUN find . -type d | xargs chmod +s
-RUN umask 0002
-```
-Instructions to checkout Grav from Github and then run installation scripts. Also assign permissions for the Grav folders. 
+You can use any IDE you want, **Eclipse** is very common and widely spreaded. This time I will be using **IntelliJ** but the theory is the same for any IDE you want.
 
-##### Step 3: Setup Grav inside Nginx
+Under the hood we will be using Gradle tools to perform the build and deploy tasks but the IDE will help us at coding time and also to debug step by step the code that will be running via **Gradle** and using the remote debugger capability of the IDE.
 
-```
-#Configure Nginx - enable gzip
-RUN sed -i 's|# gzip_types|  gzip_types|' /etc/nginx/nginx.conf
+>>>>>> **IMPORTANT**: For simplicity, there are some steps omitted. Only the strictly necessary steps to make the project run and debug in the IDE are depicted in this article.
 
-#Setup Grav configuration for Nginx
-RUN touch /etc/nginx/grav_conf.sh
-RUN chmod +x /etc/nginx/grav_conf.sh
-RUN echo '#!/bin/bash \n\
-    echo "" > /etc/nginx/sites-available/default \n\
-    ok="0" \n\
-    while IFS="" read line \n\
-    do \n\
-        if [ "$line" = "    server {" ]; then \n\
-            ok="1" \n\
-        fi \n\
-        if [ "$line" = "}" ]; then \n\
-            ok="0" \n\
-        fi \n\
-        if [ "$ok" = "1" ]; then \n\
-            echo "$line" >> /etc/nginx/sites-available/default \n\
-        fi \n\
-    done < /usr/share/nginx/html/nginx.conf' >> /etc/nginx/grav_conf.sh
-RUN /etc/nginx/grav_conf.sh
-RUN sed -i \
-        -e 's|root   html|root   /usr/share/nginx/html|' \
-        -e 's|127.0.0.1:9000;|unix:/var/run/php5-fpm.sock;|' \
-    /etc/nginx/sites-available/default
-```
-The previous instructions look a little trickier but in fact they do a very easy task: put the Grav configuration instructions inside Nginx.
+>>>>>> Use this link to find out more information about developing an API using Google Cloud Endpoints and all the required steps and best practices: [**Google Cloud Endpoints Documentation**](https://cloud.google.com/endpoints/docs/)
 
-Grav comes with a Nginx configuration file in the root of the installation and the previous script reads this configuration and writes it inside Nginx available sites.  
+#### Importing the project into IDE
 
-##### Step 4: Setup PHP, Nginx and SSH daemon services
+For demonstration purposes, we will use one of the examples available in the Google’s Git repository: The **Google Cloud Endpoints backend** example.
 
-```
-#Setup Php service
-RUN mkdir -p /etc/service/php5-fpm
-RUN touch /etc/service/php5-fpm/run
-RUN chmod +x /etc/service/php5-fpm/run
-RUN echo '#!/bin/bash \n\
-    exec /usr/sbin/php5-fpm -F' >> /etc/service/php5-fpm/run
+>>>>>> In the following link you can get the full set of examples developed by Google to demonstrate some of the Google Cloud capabilities: [**java-docs-samples**](https://github.com/GoogleCloudPlatform/java-docs-samples)
 
-#Setup Nginx service
-RUN mkdir -p /etc/service/nginx
-RUN touch /etc/service/nginx/run
-RUN chmod +x /etc/service/nginx/run
-RUN echo '#!/bin/bash \n\
-    exec /usr/sbin/nginx -g "daemon off;"' >>  /etc/service/nginx/run
+>>>>>> We will be working with this particular example: [**App Engine Standard & Google Cloud Endpoints Frameworks & Java**](https://github.com/GoogleCloudPlatform/java-docs-samples/tree/master/appengine-java8/endpoints-v2-backend)
 
-#Setup SSH service
-RUN sed -i \
-        -e 's|#PasswordAuthentication no|PasswordAuthentication no|' \
-        -e 's|#UsePAM yes|UsePAM no|' \
-    /etc/ssh/sshd_config
-RUN rm -f /etc/service/sshd/down
-RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
-```
-The first two parts write a small script that runs the PHP and Nginx services at boot time of the container. This service keeps track of those daemons and can restart them if they die.
+Checkout the code and store it somewhere in your computer. Then, open your IDE, in this case I will be using **IntelliJ**.
 
-The last part enables SSH service and disables password login for security reasons. Later you can inject your SSH public key so you can login to the container in a very secure way.
 
-##### Step 5: Expose volumes and ports
+#### Initialize the code to first compile/build.
 
-```
-#Expose configuration and content volumes
-VOLUME /root/.ssh/ /etc/nginx/ /usr/share/nginx/html/
+#### Directives to make the code debuggable.
 
-#Public ports
-EXPOSE 80 22
-```
-Those instructions expose some folders to the host system: _Grav root folder_, _Nginx configuration folder_ and _SSH user configuration folder_. Also expose ports 80 and 22. Later on, you can redirect those ports.
+#### Remote debug on the IDE
 
-With the volumes exposed, you can access directly to those folders from the host if you need to (for example to inject your SSH public key in the SSH user configuration folder of the container)
-
-#### Build and run the container
-
-Now the Dockerfile is ready the next step is to build the container and run it. In the same folder where the Dockerfile relies, run the following instructions from your host OS:
-
-```
-root [ ~ ]# docker build -t ahumaro/grav-php-nginx:0.0.1 .
-```
-In my case I am using **ahumaro/grav-php-nginx** as the tag for my image and **0.0.1** as the version. Once the process ends, you can yun your new image with the following command:
-```
-root [ ~ ]# docker run -d -p 8080:80 -p 2222:22 ahumaro/grav-php-nginx:0.0.1
-```
-Here you can see how you can redirect the ports. For example, port 22 of the container will be redirected to port 2222 in the host. To access your container make a ssh connection to port 2222 on yout host.  
-
-#### Test the final product
-
-The new container is up and running. Nginx and Grav is ready to handle new requests so lets try it. Open a browser and point it to the host machine with port 8080, this will redirect the request to port 80 on the container where Nginx-Grav is watting. You will get the following result:
-
-![Grav-Nginx with Docker](img/docker01.png)
-
-#### Next steps and recommendations
-
-Now you are ready tu run but don't forget there are many more posibilities that you can explore. For example:
-
-+ How to find the exposed volumes on the host is very easy, first find the ID of the running container with the following command:
-  ```
-  root [ ~ ]# docker ps
-  CONTAINER ID        IMAGE                           COMMAND             CREATED             STATUS              PORTS                                        NAMES
-  560abd21e5a4        ahumaro/grav-php-nginx:latest   "/sbin/my_init"     16 minutes ago      Up 16 minutes       0.0.0.0:2223->22/tcp, 0.0.0.0:8080->80/tcp   nostalgic_babbage
-  ```
-  With the ID, inspect the container and look for the section **Volumes** 
-  ```
-  root [ ~ ]# docker inspect 560abd21e5a4
-  ...
-  "Volumes": {
-        "/etc/nginx": "/var/lib/docker/vfs/dir/7e618a0800605659352f5f69ab2c58eee555a7f725a3ef46f016e2d269d1e11e",
-        "/root/.ssh": "/var/lib/docker/vfs/dir/24db3321bd511e2134dd3f6487707e62accd2bcbf2cfd299773aba9c7cb79a18",
-        "/usr/share/nginx/html": "/var/lib/docker/vfs/dir/5c927c2485052a57e70ea66bda9911479e581eceb891f5ea12a38f061a209591"
-  ...
-  ```
-  Now you can see the mappings and you can access those folders from the host, for example, you can insert your public key inside SSH user config folder of the container.
-  ```
-  cat my_ssh_key.pub > /var/lib/docker/vfs/dir/24db3321bd511e2134dd3f6487707e62accd2bcbf2cfd299773aba9c7cb79a18/authorized_keys
-  ```
-  And test a conection to the container
-  ```
-  ssh -i my_ssh_key -p 2222 root@ip-to-your-host
-  ```
-+ For the management of the Grav CMS content, there are many strategies. You can access the root folder from the volumes exposed. Also you can access directly to the container via SSH. The way I recommend is to synchronize the user folder of Grav (/usr/share/nginx/html/user) to a Git repository and just pull new changes inside it.
-
-+ Don't forget you can run your containers on the cloud with services like [Amazon EC2](http://aws.amazon.com/ec2/), [Golgle Compute Engine](https://cloud.google.com/compute/) or [Digital Ocean](http://www.digitalocean.com) among others. I like a lot the Google service but if you want a cheaper and good option, you can go with Digital Ocean.
-
-+ For the host OS right now I am testing VMware Photon and looks very sleek and nice. It has a small footprint and is very efficient running Docker infrastructure. You can run Photon on the cloud or locally. Checkout my article about [**Setup Photon Step-by-Step**](/Articles/002-photon).  
-
-+ Remember that you can find [my Grav-PHP-Nginx Dockerfile on Github](https://github.com/ahumaro/Grav-PHP-Nginx) ready to build or, if you are in a hurry, just get [my pre-builded Docker image ready to run at Docker Hub](https://registry.hub.docker.com/u/ahumaro/grav-php-nginx/).
 
 ### Keep exploring and enjoy!
 
