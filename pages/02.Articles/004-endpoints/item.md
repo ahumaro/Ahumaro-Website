@@ -54,13 +54,111 @@ For demonstration purposes, we will use one of the examples available in the Goo
 
 Checkout the code and store it somewhere in your computer. Then, open your IDE, in this case I will be using **IntelliJ**.
 
+1. Select **Import Project** from the main initial menu.
+   # ![Import project](img/GCEP01-import.png "Import project")
 
-#### Initialize the code to first compile/build.
+2. Select **build.gradle** from the folder **java-docs-samples-master/java-docs-samples-master/appengine-java8i/endpoints-v2-backend**
+   # ![Select build.gradle](img/GCEP02-import.png "Select build.gradle")
 
-#### Directives to make the code debuggable.
+3. Use the following settings to import the gradle project.
+   # ![Settings](img/GCEP03-import.png "Settings")
+
+4. After the import, this is the project tree you will get.
+   # ![Project tree](img/GCEP04-project.png "Project tree")
+
+#### Initialize the code for first build / run.
+
+>>>>>> In order to use Google Cloud Endpoints, you must have a project previously created using the console or the CLI tools and have enabled the Endpoints API for that project.
+
+Now you have the project into the IDE, it's time to customize a little the code and the configuration in order to get a sucesful build and run.
+
+1. Edit **build.gradle** to change '**YOUR_PROJECT_ID**' according to your project ID. (You can find your project ID using the Google Cloud console).
+   # ![Project ID](img/GCEP05-gradle.png "Project ID")
+
+2. Every time you modify build.gradle, the IDE will ask you to Import Changes. Agree with that every time or click on **Enable Auto-Import**.
+   # ![Import Changes](img/GCEP06-importGradle.png "Import Changes")
+
+3. Edit **appengine-web.xml** and replace **${endpoints.project.id}** with your project ID.
+   # ![Project ID](img/GCEP07-appengine.png "Project ID")
+
+4. Edit **web.xml** and replace **${endpoints.project.id}** with your project ID.
+   # ![Project ID](img/GCEP08-webxml.png "Project ID")
+
+5. Build the project using the **build** task in the Gradle tab on the right side of the IDE. (double click to run).
+   # ![Build](img/GCEP09-buildGradle.png "Build")
+
+6. This is the output of a succesful build.
+   # ![Build OK](img/GCEP10-buildOK.png "Build OK")
+
+7. In order to run the code, we will make a new Run configuration. Select **Edit Configurations** from the Run menu.
+   # ![Edit Run config](img/GCEP11-editConfMenu.png "Edit Run config")
+
+8. Click in the Plus sign and select **Gradle**.
+   # ![New Gradle config](img/GCEP12-newGradleConf.png "New Gradle Config")
+
+9. Type a name for the new Run configuration and specify **appEngineRun** in the Task field because we will be invoking that Gradle task.
+   # ![Task appEngineRun](img/GCEP13-appengineRun.png "Task appEngineRun")
+
+10. Run the project: Select the new Run configuration and click the run button.
+   # ![Run project](img/GCEP14-run.png "Run project")
+
+11. This is the output of the running project.
+   # ![Run output](img/GCEP15-running.png "Run output")
+
+12. Use **curl** to make a request for the API using this command:
+ ```
+ curl -H "Content-Type: application/json" -X POST -d '{"message":"hello world"}' http://localhost:8080/_ah/api/echo/v1/echo
+ ```
+
+   # ![API request](img/GCEP16-result.png "API request")
+
+ >>>>>> If you are using Windows and don't have curl, you can download it here at: [**curl downloads**](https://curl.haxx.se/download.html)
+
+#### Directives to make the code debuggable
+
+In the previous steps we got a compiling and running project, but, since the project runs using an external Gradle script, the IDE is not capable of capture the process and debug step by step the code. The following steps will make that posible.
+
+>>>>>> For a complete customizations of the Gradle plugin for Google App Engine, you can visit the oficial Gradle plugin page at: [**Google App Engine Gradle plugin**](https://github.com/GoogleCloudPlatform/app-gradle-plugin)  
+>>>>>>
+![Google App Engine Gradle plugin](img/GCEP17-gradlePluginDoc.png "Google App Engine Gradle plugin")
+
+>>>>>> The following steps where based in the [**GAE Gradle plugin User Guide**](https://github.com/GoogleCloudPlatform/app-gradle-plugin/blob/master/USER_GUIDE.md)
+>>>>>>
+![Debug Reference](img/GCEP18-gradlePluginDebugRef.png "Debug Reference")
+
+1. Edit **build.gradle** and insert the following code to make debuggable our project.
+
+ ```
+ appengine {
+      run {
+          jvmFlags = ["-Xdebug", "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"]
+      }
+ }
+ ```
+
+ Sometimes you will have a warning in the IDE but you can ignore that.
+
+ # ![Debug directive](img/GCEP19-debugDirectiveGradle.png "Debug directive")
+
+2. Run again the project and you will see the execution waits for the debugger to connect.
+   # ![Debugger wait](img/GCEP20-runDebugWait.png "Debugger wait")
 
 #### Remote debug on the IDE
 
+1. Apart from the Run configuration, we will make a new config but now using the **Remote** options in order to connect to the running gradle process.
+   # ![New Remote](img/GCEP21-newRemote.png "New Remote")
+
+2. In the configuration, verify that the **port** is the same as the running Gradle process of the previous steps. **5005** in this case.
+   # ![Remote config](img/GCEP22-newRemoteSettings.png "Remote config")
+
+3. Select the new **Remote config** and click the **Debug** button to start the debugger.
+   # ![Remote run](img/GCEP23-debug.png "Remote run")
+
+4. In the output you can see the succesfull connection between the remote debugger and the running Gradle task.
+   # ![Debug OK](img/GCEP24-debugOK.png "Debug OK")
+
+5. Now you can set breakpoints  and use the IDE to debug step by step your project with ease.
+   # ![Debuggind](img/GCEP25-debugging.png "Debugging")
 
 ### Keep exploring and enjoy!
 
